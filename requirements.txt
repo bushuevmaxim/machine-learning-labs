@@ -3,5 +3,6 @@ scikit-learn
 pandas
 matplotlib
 seaborn
-tensorflow
-
+tensorflow-macos
+imbalanced-learn
+catboost

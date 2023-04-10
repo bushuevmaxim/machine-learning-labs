@@ -5,8 +5,9 @@ class Network:
     def add(self, layer):
         self.layers.append(layer)
     
-    def compile(self, loss_func, learning_rate):
+    def compile(self, loss_func, loss_derivative, learning_rate):
         self.loss_function = loss_func
+        self.loss_derivative = loss_derivative
         self.learning_rate = learning_rate
     
     def fit(self, x_train, y_train, epochs):
@@ -18,7 +19,7 @@ class Network:
                 for layer in self.layers:
                     output = layer.forward_propagation(output)
 
-                error = self.loss_prime(y_train[j], output)
+                error = self.loss_derivative(y_train[j], output)
                 for layer in reversed(self.layers):
                     error = layer.backward_propagation(error, self.learning_rate)
             err /= samples

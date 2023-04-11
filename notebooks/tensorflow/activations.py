@@ -1,6 +1,6 @@
 
 class Activation:
-    def callFunction(self,x):
+    def callFunction(x):
         pass
-    def callDerivative(self,x):
+    def callDerivative(x):
         pass

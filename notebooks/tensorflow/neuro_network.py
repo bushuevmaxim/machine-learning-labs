@@ -5,8 +5,8 @@ class Network:
     def add(self, layer):
         self.layers.append(layer)
     
-    def compile(self, loss_func, loss_derivative, learning_rate):
-        self.loss_function = loss_func
+    def compile(self, loss_function, loss_derivative, learning_rate):
+        self.loss_function = loss_function
         self.loss_derivative = loss_derivative
         self.learning_rate = learning_rate
     

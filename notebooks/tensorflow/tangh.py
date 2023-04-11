@@ -3,10 +3,10 @@ from activations import Activation
 class TangH(Activation):
     
     @staticmethod
-    def callFunction(self, x):
+    def callFunction( x):
         return (np.exp(x) - np.exp(-x)) / (np.exp(x)+np.exp(-x))
     
     @staticmethod
-    def callDerivative(self, x):
-        return 1 - self.callFunction(x) ** 2
+    def callDerivative(x):
+        return 1 - TangH.callFunction(x) ** 2
 

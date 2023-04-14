@@ -6,4 +6,5 @@ from neuro_network import *
 from activations.sigmoid import *
 from activations.tangh import *
 from activations.relu import *
-from loss_functions.loss_functions import *
+from loss_functions.mean_squared_error import *
+from loss_functions.cross_entropy import *

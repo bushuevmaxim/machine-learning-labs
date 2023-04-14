@@ -1,5 +1,5 @@
 import numpy as np
-from activations import Activation
+from activations.activation import Activation
 class Sigmoid(Activation):
     @staticmethod
     def callFunction(x):

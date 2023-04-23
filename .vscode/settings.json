@@ -3,8 +3,4 @@
         "./tensorflow",
         "./tensorflow/src"
     ],
-    "python.formatting.provider": "none",
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.autopep8"
-    }
 }

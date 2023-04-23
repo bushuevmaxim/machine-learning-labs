@@ -4,5 +4,6 @@ pandas
 matplotlib
 seaborn
 tensorflow-macos
+tensorflow-datasets
 imbalanced-learn
 catboost

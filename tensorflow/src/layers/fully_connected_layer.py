@@ -1,6 +1,7 @@
 from layers.layer import Layer
 import numpy as np
 
+
 class FCLayer(Layer):
 
     def __init__(self, input_size, output_size):
@@ -13,8 +14,8 @@ class FCLayer(Layer):
         return self.output
 
     def backward_propagation(self, output_error, learning_rate):
-        input_error = np.dot(output_error, self.weights.T)#dE/dx
-        weights_error = np.dot(self.input.T, output_error)#dE/dw
+        input_error = np.dot(output_error, self.weights.T)  # dE/dx
+        weights_error = np.dot(self.input.T, output_error)  # dE/dw
         self.weights -= learning_rate * weights_error
         self.bias -= learning_rate * output_error
-        return input_error #dE/dB так как равен de/dx
+        return input_error  # dE/dB так как равен de/dx

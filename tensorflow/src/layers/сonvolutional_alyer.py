@@ -5,39 +5,36 @@ from scipy import signal
 
 class ConvolutionalLayer(Layer):
 
-    def __init__(self, input_shape, kernel_size, depth):
-        input_height, input_width, input_depth = input_shape
-        self.depth = depth
+    def __init__(self, input_shape, kernel_shape, layer_depth):
         self.input_shape = input_shape
-        self.input_depth = input_depth
-        self.output_shape = (input_height - kernel_size +
-                             1, input_width - kernel_size + 1, depth)
-        self.kernels_shape = (kernel_size, kernel_size, input_depth)
-        self.kernels = np.random.randn(*self.kernels_shape)
-        self.biases = np.random.randn(*self.output_shape)
+        self.input_depth = input_shape[2]
+        self.kernel_shape = kernel_shape
+        self.layer_depth = layer_depth
+        self.output_shape = (input_shape[0]-kernel_shape[0]+1, input_shape[1]-kernel_shape[1]+1, layer_depth)
+        self.weights = np.random.rand(kernel_shape[0], kernel_shape[1], self.input_depth, layer_depth) - 0.5
+        self.bias = np.random.rand(layer_depth) - 0.5
 
     def forward_propagation(self, input):
         self.input = input
-        self.output = self.bias
+        self.output = np.zeros(self.output_shape)
 
-        for i in range(self.depth):
-            for j in range(self.input_depth):
-                self.output = signal.correlate2d(
-                    self.input[j], self.kernels[i, j], "valid")
+        for k in range(self.layer_depth):
+            for d in range(self.input_depth):
+                self.output[:,:,k] += signal.correlate2d(self.input[:,:,d], self.weights[:,:,d,k], 'valid') + self.bias[k]
 
         return self.output
 
     def backward_propagation(self, output_error, learning_rate):
-        kernels_error = np.zeros(self.kernels_shape)
         input_error = np.zeros(self.input_shape)
+        dWeights = np.zeros((self.kernel_shape[0], self.kernel_shape[1], self.input_depth, self.layer_depth))
+        dBias = np.zeros(self.layer_depth)
 
-        for i in range(self.depth):
-            for j in range(self.input_depth):
-                kernels_error[i, j] = signal.correlate2d(
-                    self.input[j], output_error[i], "valid")
-                input_error[j] += signal.convolve2d(
-                    output_error[i], self.kernels[i, j], "full")
+        for k in range(self.layer_depth):
+            for d in range(self.input_depth):
+                input_error[:,:,d] += signal.convolve2d(output_error[:,:,k], self.weights[:,:,d,k], 'full')
+                dWeights[:,:,d,k] = signal.correlate2d(self.input[:,:,d], output_error[:,:,k], 'valid')
+            dBias[k] = self.layer_depth * np.sum(output_error[:,:,k])
 
-        self.kernels -= learning_rate * kernels_error
-        self.biases -= learning_rate * output_error
+        self.weights -= learning_rate * dWeights
+        self.bias -= learning_rate * dBias
         return input_error

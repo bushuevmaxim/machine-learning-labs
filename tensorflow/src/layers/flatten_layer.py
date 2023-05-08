@@ -1,4 +1,4 @@
-from layer import Layer
+from layers.layer import Layer
 
 class FlattenLayer(Layer):
     def __init__(self):

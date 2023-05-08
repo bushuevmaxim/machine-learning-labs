@@ -1,19 +1,12 @@
 from loss_functions.loss_function import *
 
 class BinaryCrossEntropy(LossFunction):
-    def fun(X,y):
-        m = y.shape[0]
-        p = _softmax(X)
-        log_likelihood = -np.log(p[range(m),y])
-        loss = np.sum(log_likelihood) / m
-        return loss
+    def fun(y_true, y_pred):
+        return -(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred)).mean()
     
-    def derivative(X,y):
-        m = y.shape[0]
-        grad = _softmax(X)
-        grad[range(m),y] -= 1
-        grad = grad/m
-        return grad
+    def derivative(y_true,y_pred):
+        
+        return (-y_true/y_pred) + (1 - y_true)/(1 - y_pred)
     
 
 def _softmax(X):

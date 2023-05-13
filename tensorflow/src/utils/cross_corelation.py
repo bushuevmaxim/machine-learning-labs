@@ -1,25 +1,28 @@
 import numpy as np
-def corelation2d(in1 = np.array((3,3)), in2 = np.array((3,3)), mode = "valid"):
-    current_element = (0,0)
-    y = 0
-    stride = 1
-    output = np.array(in2.shape)
-    for iter in range(len(in2)**2):#n * m output matrix
-        submatrix = in1[0:in2.shape[0], 0:in2.shape[0]]
-        print(submatrix)
-        y += np.sum(np.multiply(submatrix, in2))
-        print(f"y = {y}")
-
-def main():
-    in1 = [[1,6,2],
-           [5,3,1],
-           [7,0,4]]
-    in2 = [[1,2],
-           [-1,0]]
-    corelation2d(in1, in2)
-if __name__ == "main":
-    main()
 
 
+def correlate2d(in1: np.ndarray, in2: np.ndarray, mode="valid", stride=1):
+    y = []
+    if (mode == "full"):
+        in1 = np.pad(in1, 1, 'constant', constant_values=0)
+    n = len(in1)
+    m = len(in2)
+    index1 = index3 = 0
+    index2 = index4 = m
+    shape = n - m + 1
+    while (index2 <= n):
+        while (index4 <= n):
+            submatrix = in1[index1:index2, index3:index4]
+            y.append(np.sum(np.multiply(submatrix, in2)))
+            index3 += stride
+            index4 += stride
+        index1 += stride
+        index2 += stride
+        index3 = 0
+        index4 = m
+
+    return np.array(y).reshape((shape, shape))
 
 
+def convolve2d(in1: np.ndarray, in2: np.ndarray, mode="valid", stride=1):
+    correlate2d(in1, np.rot90(in2, 2), mode, stride)

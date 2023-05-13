@@ -23,7 +23,7 @@ class ConvolutionalLayer(Layer):
 
         for k in range(self.layer_depth):
             for d in range(self.input_depth):
-                self.output[:, :, k] += correlate2d(
+                self.output[:, :, k] = self.output[:, :, k] + correlate2d(
                     self.input[:, :, d], self.weights[:, :, d, k], 'valid') + self.bias[k]
 
         return self.output

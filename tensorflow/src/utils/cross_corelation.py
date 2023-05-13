@@ -2,27 +2,25 @@ import numpy as np
 
 
 def correlate2d(in1: np.ndarray, in2: np.ndarray, mode="valid", stride=1):
-    y = []
-    if (mode == "full"):
-        in1 = np.pad(in1, 1, 'constant', constant_values=0)
     n = len(in1)
     m = len(in2)
-    index1 = index3 = 0
-    index2 = index4 = m
-    shape = n - m + 1
-    while (index2 <= n):
-        while (index4 <= n):
-            submatrix = in1[index1:index2, index3:index4]
-            y.append(np.sum(np.multiply(submatrix, in2)))
-            index3 += stride
-            index4 += stride
-        index1 += stride
-        index2 += stride
-        index3 = 0
-        index4 = m
+    result = []
+    result_shape = 0
+    if (mode == "full"):
+        result_shape = len(in1) + 1
+        in1 = np.pad(in1, (m - 1, m - 1), mode='constant')
+    elif (mode == "same"):
+        result_shape = len(in1)
+        in1 = np.pad(in1, (1, 1), mode='constant')
+    else:
+        result_shape = n - m + 1
+    for row in range(result_shape):
+        for col in range(result_shape):
+            slider = in1[row:row+m, col:col+m,]
+            result.append(np.sum(slider * in2))
 
-    return np.array(y).reshape((shape, shape))
+    return np.array(result).reshape(result_shape, result_shape).astype(int)
 
 
 def convolve2d(in1: np.ndarray, in2: np.ndarray, mode="valid", stride=1):
-    correlate2d(in1, np.rot90(in2, 2), mode, stride)
+    return correlate2d(in1, np.rot90(in2, 2), mode, stride)

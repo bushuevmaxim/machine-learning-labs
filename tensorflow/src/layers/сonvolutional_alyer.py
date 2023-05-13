@@ -36,8 +36,8 @@ class ConvolutionalLayer(Layer):
 
         for k in range(self.layer_depth):
             for d in range(self.input_depth):
-                input_error[:, :, d] += convolve2d(
-                    output_error[:, :, k], self.weights[:, :, d, k], 'full')
+                input_error[:, :, d] += correlate2d(
+                    output_error[:, :, k], np.rot90(self.weights[:, :, d, k], 2), 'full')
                 dWeights[:, :, d, k] = correlate2d(
                     self.input[:, :, d], output_error[:, :, k], 'valid')
             dBias[k] = self.layer_depth * np.sum(output_error[:, :, k])

@@ -7,3 +7,4 @@ tensorflow-macos
 tensorflow-datasets
 imbalanced-learn
 catboost
+numpy-utils

@@ -10,4 +10,5 @@ from layers.activation_layer import ActivationLayer
 from layers.fully_connected_layer import FCLayer
 from layers.сonvolutional_alyer import ConvolutionalLayer
 from layers.flatten_layer import FlattenLayer
+from layers.max_pooling_layer import MaxPoolingLayer
 

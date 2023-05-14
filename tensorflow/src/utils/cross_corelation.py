@@ -25,3 +25,5 @@ def correlate2d(in1: np.ndarray, in2: np.ndarray, mode="valid", stride=1):
 
 def convolve2d(in1: np.ndarray, in2: np.ndarray, mode="valid", stride=1):
     return correlate2d(in1, np.rot90(in2, 2), mode, stride)
+
+

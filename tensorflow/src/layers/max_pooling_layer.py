@@ -36,6 +36,7 @@ class MaxPoolingLayer(Layer):
 def get_max(slider: np.ndarray):
     max_value = -np.inf
     n = slider.shape[0]
+    print(slider)
     i_max = j_max = 0
     for i in range(n):
         for j in range(n):
